@@ -5,7 +5,17 @@ const DB_PATH: &str = "mydb.db";
 const CACHE_PATH: &str = "/store/cache";
 
 fn main() {
-    println!("Hello, world!");
+    let conn = match Connection::open(DB_PATH) {
+        Ok(result) => result,
+        Err(_) => {
+            eprintln!("Failed to open db connection");
+            return;
+        }
+    };
+    match update(&conn) {
+        Ok(_) => println!("done :)"),
+        Err(_) => println!("error :(")
+    };
 }
 
 fn update(conn: &Connection) -> Result<()> {
